@@ -316,3 +316,19 @@ end
  
  ## fail over
  
+ 1. Matikan server master dengan menjalankan perintah ```redis-cli -h 192.168.17.105 -p 6380 debug segfault``` 
+ 2. cek pada sentinel
+ ![](https://github.com/yusran8/redisdb/blob/master/redisdb/pict/swithcingmaster.png)
+ 
+ terlihat bahwa redis menganti master dari 192.168.17.105 ke server 192.168.17.107
+ 
+ 3. kemudian cek master pada masing-masing server
+ ```
+ redis-cli -h 192.168.17.105 -p 26380 sentinel get-master-addr-by-name redis-cluster
+ redis-cli -h 192.168.17.106 -p 26380 sentinel get-master-addr-by-name redis-cluster
+ redis-cli -h 192.168.17.107 -p 26380 sentinel get-master-addr-by-name redis-cluster
+ ```
+ 
+ ![](https://github.com/yusran8/redisdb/blob/master/redisdb/pict/failovercheck.png)
+ 
+ server master telah berubah menjadi 192.168.17.107
